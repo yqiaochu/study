@@ -9,6 +9,7 @@ const home = r => require.ensure([], () => r(require('@/pages/home')), 'home');
 const searchdemo = r => require.ensure([], () => r(require('@/pages/searchdemo')), 'searchdemo');
 const uploaddemo = r => require.ensure([], () => r(require('@/pages/uploaddemo')), 'uploaddemo');
 const svgdemo = r => require.ensure([], () => r(require('@/pages/svgdemo')), 'svgdemo');
+const canvaswaterDocument = r => require.ensure([], () => r(require('@/pages/canvaswaterDocument')), 'canvaswaterDocument');
 const drag = r => require.ensure([], () => r(require('@/pages/drag')), 'drag');
 export default new Router({
 	routes: [{
@@ -38,6 +39,12 @@ export default new Router({
                     path: '/svgdemo',
                     name: 'svgdemo',
                     component: svgdemo,
+                    children: []
+                },
+                {
+                    path: '/canvaswaterDocument',
+                    name: 'canvaswaterDocument',
+                    component: canvaswaterDocument,
                     children: []
                 },
                 {
