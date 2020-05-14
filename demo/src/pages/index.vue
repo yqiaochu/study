@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-      <button @click="tosearch">tosearch</button>
+      <!-- <button @click="tosearch">tosearch</button>
     11111111111111111111111111
     <el-select
       v-model="value"
@@ -15,7 +15,7 @@
         :label="item.label"
         :value="item.value"
       ></el-option>
-    </el-select>
+    </el-select> -->
 
 <!-- 
             <el-upload
