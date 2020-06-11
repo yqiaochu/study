@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 
+
 Vue.use(Router)
 
 const index = r => require.ensure([], () => r(require('@/pages/index')), 'index');
@@ -11,6 +12,8 @@ const uploaddemo = r => require.ensure([], () => r(require('@/pages/uploaddemo')
 const svgdemo = r => require.ensure([], () => r(require('@/pages/svgdemo')), 'svgdemo');
 const canvaswaterDocument = r => require.ensure([], () => r(require('@/pages/canvaswaterDocument')), 'canvaswaterDocument');
 const drag = r => require.ensure([], () => r(require('@/pages/drag')), 'drag');
+const bctledgerForm = r => require.ensure([], () => r(require('@/pages/bctledgerForm')), 'bctledgerForm');
+const amap = r => require.ensure([], () => r(require('@/pages/amap')), 'amap');
 export default new Router({
 	routes: [{
 			path: '/',
@@ -51,6 +54,18 @@ export default new Router({
                     path: '/drag',
                     name: 'drag',
                     component: drag,
+                    children: []
+                },
+                {
+                    path: '/bctledgerForm',
+                    name: 'bctledgerForm',
+                    component: bctledgerForm,
+                    children: []
+                },
+                {
+                    path: '/amap',
+                    name: 'amap',
+                    component: amap,
                     children: []
                 },
             ]

@@ -22,7 +22,7 @@ export default {
             //开始计算鼠标处距离元素的位置
             console.log(e.clientY)
             console.log(dragBox.offsetTop)
-            let disX =e.clientX -dragBox.offsetLeft  //距离可视页面左边距离- 指的是距离它自己左边的距离
+            let disX =e.clientX -dragBox.offsetLeft  //距离可视页面左边距离- 距离上一定位元素的距离
             let disY =e.clientY -dragBox.offsetTop
 
             document.onmousemove =e=>{
@@ -59,12 +59,14 @@ export default {
     width: 100%;
     height: 500px;
     background: #ccc;
+    /* 不加就是相对于上级有position的元素了 */
+    position:relative;
 }
 .drag_box{
     width: 100px;
     height: 80px;
     background: yellow;
-    position: relative;
+    position: absolute;
     top: 100px;
     left: 100px;
 

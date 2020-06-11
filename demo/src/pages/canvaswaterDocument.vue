@@ -7,8 +7,8 @@
   </div>
 </template>
 <script>
-import {__waterDocument} from "../js/canvaswaterDocument";
-import {__waterDocumentSvg} from '../js/SvgwaterDocument';
+import {__waterDocument as waterDocument} from "../js/canvaswaterDocument";
+import {__waterDocumentSvg } from '../js/SvgwaterDocument';
 export default {
   data() {
     return {
@@ -19,7 +19,17 @@ export default {
 
   },
   mounted(){
-      __waterDocument()
+      waterDocument({
+            width :'200px',
+            height :'150px',
+            textAlign :'center',
+            textBaseline :'middle',
+            font :"20px Microsoft Yahei",
+            fillStyle :'rgba(230, 230, 230, 0.8)',
+            content :'保密水印',
+            rotate :'10',
+            zIndex :-1000
+      })
   },
   
 };

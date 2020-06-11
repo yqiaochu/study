@@ -18,6 +18,28 @@ Vue.prototype.axios = axios    //全局注册，使用方法为:this.axios
 // let baseURL = window.location.origin;
 // axios.defaults.baseURL = baseURL
 
+//引入vue-amap
+import AMap from "vue-amap";
+Vue.use(AMap);
+AMap.initAMapApiLoader({
+  // 高德的key
+  key: "24965b103d53b2097a03a4245601ba74",
+  // 插件集合
+  plugin: [
+    "AMap.Autocomplete",
+    "AMap.PlaceSearch",
+    "AMap.Scale",
+    "AMap.OverView",
+    "AMap.ToolBar",
+    "AMap.MapType",
+    "AMap.PolyEditor",
+    "AMap.CircleEditor",
+    "AMap.DistrictLayer",
+    "AMap.DistrictSearch",
+    "Map3D",
+  ]
+});
+
 // 引用我们的自定义组件
 import "./components";
 
