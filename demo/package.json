@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "echarts": "^4.8.0",
     "element-ui": "^2.13.0",
     "pinyin-match": "^1.1.0",
     "qs.js": "^0.1.12",
+    "v-charts": "^1.19.0",
     "vue": "^2.5.2",
     "vue-amap": "^0.5.10",
     "vue-axios": "^2.1.5",

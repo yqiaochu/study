@@ -18,6 +18,14 @@ Vue.prototype.axios = axios    //全局注册，使用方法为:this.axios
 // let baseURL = window.location.origin;
 // axios.defaults.baseURL = baseURL
 
+
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+//引入VCharts
+import VCharts from 'v-charts'
+
+Vue.use(VCharts)
+
 //引入vue-amap
 import AMap from "vue-amap";
 Vue.use(AMap);

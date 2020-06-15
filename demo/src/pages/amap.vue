@@ -1,8 +1,5 @@
 <template>
   <div class="energyMonitor-wrap" @click="searchStatus=false">
-    <div class="float-btn" @click="goEnergyMonitorTable">
-      <p>能耗监测</p>
-    </div>
     <div class="left">
       <el-amap 
       v-loading="loading1" element-loading-background="rgba(0, 0, 0, 0.5)"
@@ -18,15 +15,14 @@
       :zoomEnable="true"
       :dragEnable="true"
       >
-
-        <el-amap-marker
+      <el-amap-marker
         :visible="areaScale == 'province'"
         v-for="marker in provinceMarkers" 
         :key="marker.position[0]"
-        icon="./static/map-markers/energyMonitor/position.png"
+        icon="./static/aaa.png"
         :events="marker.events"
         :position="marker.position"
-        :offset="[-30,-50]"
+        
         ></el-amap-marker>
 
         <el-amap-info-window
@@ -41,7 +37,7 @@
         :visible="areaScale == 'city'"
         v-for="marker in cityMarkers" 
         :key="marker.position[0]"
-        icon="./static/map-markers/position.png"
+        icon="./static/aaa.png"
         :position="marker.position"
         :offset="[-10,-30]"
         :events="marker.events"
@@ -78,39 +74,9 @@
   </div>
 </template>
 <script>
-const exampleComponents = {
-  props: ['text'],
-  template: `<div>{{text}}</div>`
-}
-import Vue from "vue";
-// import options from "@/utils/henanprovince.js";
-
 import {AMapManager,lazyAMapApiLoaderInstance} from "vue-amap"
 let amapManager = new AMapManager();
 
-import VueAMap from "vue-amap";
-Vue.use(VueAMap);
-
-VueAMap.initAMapApiLoader({
-  // 高德的key
-  key: "527f771ec9dec681f7d6e2ca9949adab",
-  // 插件集合
-  plugin: [
-    "AMap.Geocoder",
-    "AMap.Geolocation",
-    "AMap.Autocomplete",
-    "AMap.PlaceSearch",
-    "AMap.Scale",
-    "AMap.OverView",
-    "AMap.ToolBar",
-    "AMap.MapType",
-    "AMap.PolyEditor",
-    "AMap.CircleEditor",
-    "AMap.DistrictSearch",
-  ],
-  v: "1.4.4",
-  uiVersion: '1.0'
-});
 
 export default {
   name: "energyMonitor",
@@ -136,47 +102,10 @@ export default {
       queryform:{
         unit:1,
       },
-      searchForm:{},
-      toggleCountData:[
-        {
-          codeName:'全部',
-          codeValue:'',
-          status:true,
-        },
-        {
-          codeName:'正常',
-          codeValue:0,
-          status:false,
-        },
-        {
-          codeName:'异常',
-          codeValue:1,
-          status:false,
-        },
-      ],
-      toggleUnitData:[
-        {
-          codeName:'万吨标准煤',
-          codeValue:1,
-          status:true,
-        },
-        {
-          codeName:'吨标准煤',
-          codeValue:2,
-          status:false,
-        },
-      ],
+
       Visible:false,
       searchStatus:false,
-      dialoading:false,
-      diatableData:[],
-      currentPage:0,
-      diapageTotal:0,
-      regionCodeinfo:'',
-      loading1: true,
-      loading2: true,
-      loading3: true,
-      lastDay:'',
+      loading1: false,
       contentRender: (h, instance) => h(exampleComponents,{style: {}, props: {text: '50'}}, ['xxxxxxx']),
       handlerValue:true,
       options:[],
@@ -204,6 +133,10 @@ export default {
         content:``
       },
       district: null,
+      colors :{},
+      disProvince:null,
+      adCode:410000,
+      depth:1,
       polygons: [],
       plugin: [
         // {
@@ -233,7 +166,7 @@ export default {
       events:{
         init (o) {
           // o.setMapStyle('darkblue')
-          amapManager._map.setMapStyle('amap://styles/darkblue')
+          amapManager._map.setMapStyle('amap://styles/b07ef2b344a8adca6c9e97f59446273f')
           o.getCity(result => {
           })
           lazyAMapApiLoaderInstance.load().then(() => {
@@ -275,8 +208,6 @@ export default {
             amapManager._map.setZoom(7);
             self.center = [113.85233, 34.03570]
             // self.getRegionEnterpriseInfo()
-            self.getIndustryStructureData()
-            self.getEnterpriseReportedInfo()
 
             // amapManager._map.remove(self.polygons)
             // self.polygons = [];
@@ -290,176 +221,650 @@ export default {
 
         }
       },
-      provinceMarkers:[],
+      provinceMarkers:[
+    {
+        "regionCode":"410100",
+        "regionName":"郑州市",
+        "longitude":"113.665410",
+        "latitude":"34.757977",
+        "regionEenergyEnterprise":4,
+        "energyEnterpriseInfo":[
+            {
+                "regionCode":"410103",
+                "regionName":"二七区",
+                "longitude":"333.000000",
+                "latitude":"333.000000",
+                "corporationCode":null,
+                "enterpriseName":"33333",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"3333"
+            },
+            {
+                "regionCode":"410103",
+                "regionName":"二七区",
+                "longitude":"99.999900",
+                "latitude":"88.888800",
+                "corporationCode":null,
+                "enterpriseName":"国电荥阳煤电一体化有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"测试地址"
+            },
+            {
+                "regionCode":"410103",
+                "regionName":"二七区",
+                "longitude":"112.500000",
+                "latitude":"34.430000",
+                "corporationCode":null,
+                "enterpriseName":"(郑州嘉耐特种铝酸盐有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"郑州"
+            },
+            {
+                "regionCode":"410105",
+                "regionName":"金水区",
+                "longitude":"29.130000",
+                "latitude":"23.230000",
+                "corporationCode":null,
+                "enterpriseName":"qwrqw",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"sfsdfs"
+            }
+        ],
+        "position":[
+            "113.665410",
+            "34.757977"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410181",
+        "regionName":"巩义市",
+        "longitude":"112.982830",
+        "latitude":"34.752180",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "112.982830",
+            "34.752180"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410200",
+        "regionName":"开封市",
+        "longitude":"114.341446",
+        "latitude":"34.797050",
+        "regionEenergyEnterprise":1,
+        "energyEnterpriseInfo":[
+            {
+                "regionCode":"410202",
+                "regionName":"龙亭区",
+                "longitude":"60.000000",
+                "latitude":"60.000000",
+                "corporationCode":null,
+                "enterpriseName":"河南省宏大化工有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"河南郑州"
+            }
+        ],
+        "position":[
+            "114.341446",
+            "34.797050"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410225",
+        "regionName":"兰考县",
+        "longitude":"114.820570",
+        "latitude":"34.829900",
+        "regionEenergyEnterprise":1,
+        "energyEnterpriseInfo":[
+            {
+                "regionCode":"410225",
+                "regionName":"兰考县",
+                "longitude":"112.000000",
+                "latitude":"42.000000",
+                "corporationCode":null,
+                "enterpriseName":"兰考县单位",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":""
+            }
+        ],
+        "position":[
+            "114.820570",
+            "34.829900"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410300",
+        "regionName":"洛阳市",
+        "longitude":"112.434470",
+        "latitude":"34.663040",
+        "regionEenergyEnterprise":1,
+        "energyEnterpriseInfo":[
+            {
+                "regionCode":"410322",
+                "regionName":"孟津县",
+                "longitude":"23.000000",
+                "latitude":"12.000000",
+                "corporationCode":null,
+                "enterpriseName":"测试用郭11111",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"河南省洛阳市"
+            }
+        ],
+        "position":[
+            "112.434470",
+            "34.663040"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410400",
+        "regionName":"平顶山市",
+        "longitude":"113.307720",
+        "latitude":"33.735240",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "113.307720",
+            "33.735240"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410482",
+        "regionName":"汝州市",
+        "longitude":"112.845340",
+        "latitude":"34.167408",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "112.845340",
+            "34.167408"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410500",
+        "regionName":"安阳市",
+        "longitude":"114.352486",
+        "latitude":"36.103443",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.352486",
+            "36.103443"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410526",
+        "regionName":"滑县",
+        "longitude":"114.524000",
+        "latitude":"35.574627",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.524000",
+            "35.574627"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410600",
+        "regionName":"鹤壁市",
+        "longitude":"114.295440",
+        "latitude":"35.748238",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.295440",
+            "35.748238"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410700",
+        "regionName":"新乡市",
+        "longitude":"113.883990",
+        "latitude":"35.302616",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "113.883990",
+            "35.302616"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410728",
+        "regionName":"长垣县",
+        "longitude":"114.673805",
+        "latitude":"35.196150",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.673805",
+            "35.196150"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410800",
+        "regionName":"焦作市",
+        "longitude":"113.238266",
+        "latitude":"35.239040",
+        "regionEenergyEnterprise":8,
+        "energyEnterpriseInfo":[
+            {
+                "regionCode":"410823",
+                "regionName":"武陟县",
+                "longitude":"112.000000",
+                "latitude":"31.000000",
+                "corporationCode":null,
+                "enterpriseName":"焦作市华康糖醇科技有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"焦作市武陟县西陶镇"
+            },
+            {
+                "regionCode":"410822",
+                "regionName":"博爱县",
+                "longitude":"112.110000",
+                "latitude":"33.120000",
+                "corporationCode":null,
+                "enterpriseName":"博爱金隅水泥有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"博爱县工业园区岩鑫大道六号"
+            },
+            {
+                "regionCode":"410882",
+                "regionName":"沁阳市",
+                "longitude":"112.856520",
+                "latitude":"35.197780",
+                "corporationCode":null,
+                "enterpriseName":"沁阳市金隅水泥有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"沁阳市沁北工业集聚区沁北园区"
+            },
+            {
+                "regionCode":"410821",
+                "regionName":"修武县",
+                "longitude":"113.440000",
+                "latitude":"35.370000",
+                "corporationCode":null,
+                "enterpriseName":"中铝中州铝业有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"河南省修武县七贤镇中州铝厂"
+            },
+            {
+                "regionCode":"410803",
+                "regionName":"中站区",
+                "longitude":"113.180000",
+                "latitude":"35.230000",
+                "corporationCode":null,
+                "enterpriseName":"河南佰利联新材料有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"焦作市中站区焦克路1669号"
+            },
+            {
+                "regionCode":"410803",
+                "regionName":"中站区",
+                "longitude":"113.180000",
+                "latitude":"35.230000",
+                "corporationCode":null,
+                "enterpriseName":"河南鑫诚耐火材料股份有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"焦作市中站区焦克路南"
+            },
+            {
+                "regionCode":"410803",
+                "regionName":"中站区",
+                "longitude":"113.120000",
+                "latitude":"35.220000",
+                "corporationCode":null,
+                "enterpriseName":"多氟多化工股份有限公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"河南省焦作市中站区焦克路"
+            },
+            {
+                "regionCode":"410882",
+                "regionName":"沁阳市",
+                "longitude":"112.870000",
+                "latitude":"35.200000",
+                "corporationCode":null,
+                "enterpriseName":"昊华宇航化工有限责任公司",
+                "industryCode":null,
+                "industryName":null,
+                "enterpriseSize":"河南省沁阳市沁北工业集聚区"
+            }
+        ],
+        "position":[
+            "113.238266",
+            "35.239040"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"410900",
+        "regionName":"濮阳市",
+        "longitude":"115.041300",
+        "latitude":"35.768234",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "115.041300",
+            "35.768234"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411000",
+        "regionName":"许昌市",
+        "longitude":"113.826065",
+        "latitude":"34.022957",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "113.826065",
+            "34.022957"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411100",
+        "regionName":"漯河市",
+        "longitude":"114.026405",
+        "latitude":"33.575855",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.026405",
+            "33.575855"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411200",
+        "regionName":"三门峡市",
+        "longitude":"111.194100",
+        "latitude":"34.777336",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "111.194100",
+            "34.777336"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411300",
+        "regionName":"南阳市",
+        "longitude":"112.540920",
+        "latitude":"32.999080",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "112.540920",
+            "32.999080"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411381",
+        "regionName":"邓州市",
+        "longitude":"112.092710",
+        "latitude":"32.681640",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "112.092710",
+            "32.681640"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411400",
+        "regionName":"商丘市",
+        "longitude":"115.650500",
+        "latitude":"34.437054",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "115.650500",
+            "34.437054"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411481",
+        "regionName":"永城市",
+        "longitude":"116.449670",
+        "latitude":"33.931316",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "116.449670",
+            "33.931316"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411500",
+        "regionName":"信阳市",
+        "longitude":"114.075030",
+        "latitude":"32.123276",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.075030",
+            "32.123276"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411525",
+        "regionName":"固始县",
+        "longitude":"115.667330",
+        "latitude":"32.183075",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "115.667330",
+            "32.183075"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411600",
+        "regionName":"周口市",
+        "longitude":"114.649650",
+        "latitude":"33.620358",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.649650",
+            "33.620358"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411628",
+        "regionName":"鹿邑县",
+        "longitude":"115.486390",
+        "latitude":"33.861070",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "115.486390",
+            "33.861070"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411700",
+        "regionName":"驻马店市",
+        "longitude":"114.024734",
+        "latitude":"32.980167",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.024734",
+            "32.980167"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"411729",
+        "regionName":"新蔡县",
+        "longitude":"114.975240",
+        "latitude":"32.749947",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "114.975240",
+            "32.749947"
+        ],
+        "events":{
+
+        }
+    },
+    {
+        "regionCode":"419001",
+        "regionName":"济源市",
+        "longitude":"112.590050",
+        "latitude":"35.090378",
+        "regionEenergyEnterprise":0,
+        "energyEnterpriseInfo":[
+
+        ],
+        "position":[
+            "112.590050",
+            "35.090378"
+        ],
+        "events":{
+
+        }
+    }
+],
       cityMarkers:[],
       countyMarkers:[],
-      chartRingDataTwo: {
-        columns: ["类别", "家"],
-        rows: []
-      },
-      chartRingData: {
-        columns: ["industryName", "enterpriseCount"],
-        rows: [
-          {color: "#2891fc" },
-          {color: "#fcc93c" },
-          {color: "#38dc88" },
-          {color: "#fd8888" },
-          {color: "#ed85fd" },
-          {color: "#7695fc" },
-          {color: "#42e0f9" },
-        ]
-      },
     };
   },
   methods: {
-    toggleUnit(val){
-      var radio;
-       this.toggleUnitData.forEach((e)=>{
-        e.status=false;
-        if(e.codeName==val.codeName){
-          e.status=true;
-          radio=e.codeValue
-        }
-      })
-      if(radio==''){
-        this.queryform.unit=null;
-      }else{
-        this.queryform.unit = radio;
-      }
-      // this.searchform();
-      if(this.queryform.date&&this.queryform.date.length>0){
-              this.queryform.beginTime=this.queryform.date[0];
-              this.queryform.endTime=this.queryform.date[1];
-          }
-          if(!this.queryform.comprehensiveConsumptionMinf){
-              this.queryform.comprehensiveConsumptionMin=null;
-          }else{
-              this.queryform.comprehensiveConsumptionMin=Number(this.queryform.comprehensiveConsumptionMinf)
-          }
-          if(!this.queryform.comprehensiveConsumptionMaxf){
-              this.queryform.comprehensiveConsumptionMax=null;
-          }else{
-              this.queryform.comprehensiveConsumptionMax=Number(this.queryform.comprehensiveConsumptionMaxf)
-          }
-          if(!this.queryform.physicalConsumptionDiscountMaxf){
-              this.queryform.physicalConsumptionDiscountMax=null;
-          }else{
-              this.queryform.physicalConsumptionDiscountMax=Number(this.queryform.physicalConsumptionDiscountMaxf)
-          }
-          if(!this.queryform.physicalConsumptionDiscountMinf){
-              this.queryform.physicalConsumptionDiscountMin=null;
-          }else{
-              this.queryform.physicalConsumptionDiscountMin=Number(this.queryform.physicalConsumptionDiscountMinf)
-          }
-          if(!this.queryform.physicalConsumptionMaxf){
-              this.queryform.physicalConsumptionMax=null;
-          }else{
-              this.queryform.physicalConsumptionMax=Number(this.queryform.physicalConsumptionMaxf)
-          }
-          if(!this.queryform.physicalConsumptionMinf){
-              this.queryform.physicalConsumptionMin=null;
-          }else{
-              this.queryform.physicalConsumptionMin=Number(this.queryform.physicalConsumptionMinf)
-          }
-          this.search(this.queryform)
-    },
-    toggleCount(val){
-      var radio;
-      this.toggleCountData.forEach((e)=>{
-        e.status=false;
-        if(e.codeName==val.codeName){
-          e.status=true;
-          radio=e.codeValue;
-        }
-      })
-      debugger
-      if(radio==''){
-        this.queryform.dataQuality=null;
-      }else{
-        this.queryform.dataQuality =radio;
-      }
-      this.searchform();
-    },
-    handleCurrentChange(val) {
-        //  this.loading = true;
-          // this.pageSize = val;
-          this.pageNum = val;
-          this.queryform.pageSize = this.pageSize;
-          this.queryform.pageNum = this.pageNum;
-          this.search(this.queryform)
-    },
-    reset(){
-        this.optionsData=this.options;
-    },
-    iptChange(val){
-        console.log(val)
-        this.optionsData=this.options;
-        const PinyinMatch = require('pinyin-match');
-        if(val){
-        var result=[];
-        this.optionsData.forEach((e)=>{
-            var m=PinyinMatch.match(e.label,val);
-            if(m){
-            result.push(e);
-            }
-        })
-        this.optionsData=result;
-        }else{
-        this.optionsData=this.options;
-        }
-        console.log( this.optionsData);
-    },
-    dateChange() {
-      this.getEnterpriseReportedInfo()
-    },
-    reChange(val){
-      if(this.queryform.enterpriseCodes&&this.queryform.enterpriseCodes.length>0){
-          this.queryform.enterpriseCodes=[];
-      }
-      console.log(val);
-      console.log(this.regionCodes);
-      this.queryform.regionCodes=this.regionCodes;
-      this.getEnterprise();
 
-    },
-    cascaderChange(){
-      this.loading2 = true
-      let self = this
-    //   this.handlerValue = !this.handlerValue
-      if(this.optionValue== this.options[0].value){
-        this.areaScale = 'province'
-        this.center = [113.85233, 34.03570]
-        amapManager._map.setZoom(7);
-        this.getRegionEnterpriseInfo()
-        this.getIndustryStructureData()
-        this.getEnterpriseReportedInfo()
-      }else{
-        this.areaScale = 'city'
-        let result = {}
-        this.options.forEach((e)=>{
-            if(e.value== this.optionValue){
-                result=e
-            }
-        })
-        // let result = this.options.filter((i,j)=>{
-        //   return i.value == this.optionValue
-        // })
-        console.log('result==================='+JSON.stringify(result) )
-        let i = {
-          position: [result.longitude,result.latitude],
-          regionCode: result.value,
-        }
-        this.getDistrictEnterpriseInfo(i)
-        this.getIndustryStructureData()
-        this.getEnterpriseReportedInfo()
-      }
-      this.getIndustryStructureData()
-    },
-    goEnergyMonitorTable(){
-      this.$router.push({
-        path:'/energyMonitorTable'
-      })
-    },
     getProvinceMarkerContent(marker){
       const content = `
       <div
@@ -529,90 +934,52 @@ export default {
       `
       return content
     },
-    searchform() {
-      if((this.queryform.energyClassCodes&&this.queryform.energyClassCodes.length>0)||(this.queryform.energyTypeCodes&&this.queryform.energyTypeCodes.length>0)){
-          this.dataStatus=true;
-      }else{
-          this.dataStatus=false;
-      }
-      this.searchStatus=false;
-      if(this.queryform.date&&this.queryform.date.length>0){
-          this.searchStatus=false;
-          console.log(this.searchStatus);
-          this.dialoading = true;
-          this.pageSize=10;
-          this.pageNum=1;
-          this.queryform.pageSize=10;
-          this.queryform.pageNum= this.pageNum;
-          // if(this.radio==''){
-          //     this.queryform.dataQuality=null;
-          // }else{
-          //     this.queryform.dataQuality = Number(this.radio);
-          // }
-          // if(this.unitRadio==''){
-          //     this.queryform.unit=null;
-          // }else{
-          //     this.queryform.unit = Number(this.unitRadio);
-          // }
-          if(this.queryform.date&&this.queryform.date.length>0){
-              this.queryform.beginTime=this.queryform.date[0];
-              this.queryform.endTime=this.queryform.date[1];
-          }
-          if(!this.queryform.comprehensiveConsumptionMinf){
-              this.queryform.comprehensiveConsumptionMin=null;
-          }else{
-              this.queryform.comprehensiveConsumptionMin=Number(this.queryform.comprehensiveConsumptionMinf)
-          }
-          if(!this.queryform.comprehensiveConsumptionMaxf){
-              this.queryform.comprehensiveConsumptionMax=null;
-          }else{
-              this.queryform.comprehensiveConsumptionMax=Number(this.queryform.comprehensiveConsumptionMaxf)
-          }
-          if(!this.queryform.physicalConsumptionDiscountMaxf){
-              this.queryform.physicalConsumptionDiscountMax=null;
-          }else{
-              this.queryform.physicalConsumptionDiscountMax=Number(this.queryform.physicalConsumptionDiscountMaxf)
-          }
-          if(!this.queryform.physicalConsumptionDiscountMinf){
-              this.queryform.physicalConsumptionDiscountMin=null;
-          }else{
-              this.queryform.physicalConsumptionDiscountMin=Number(this.queryform.physicalConsumptionDiscountMinf)
-          }
-          if(!this.queryform.physicalConsumptionMaxf){
-              this.queryform.physicalConsumptionMax=null;
-          }else{
-              this.queryform.physicalConsumptionMax=Number(this.queryform.physicalConsumptionMaxf)
-          }
-          if(!this.queryform.physicalConsumptionMinf){
-              this.queryform.physicalConsumptionMin=null;
-          }else{
-              this.queryform.physicalConsumptionMin=Number(this.queryform.physicalConsumptionMinf)
-          }
-          this.search(this.queryform)
-        }else{
-          this.$message.warning('请选择时间范围')
-        }    
-    },
-    search(form) {
-      this.searchStatus=false;
-      this.dialoading=true
-      this.axios.post('/api/government/comprehensiveReport/comprehensiveReport', this.queryform).then((res) => {
+    // var map = new AMap.Map("container", {
+    //     zoom: 4.5,
+    //     center: [116.412427, 39.303573],
+    //     pitch: 0,
+    //     viewMode: '3D',
+    // });
 
-          console.log( res.data.data)
-          this.loading=false
-          if (res.data.code == 200) {
-              this.diatableData = res.data.data.list
-              this.diapageTotal = res.data.data.total;
-              this.dialoading = false;
-          }else{
-            this.$message.error(res.data.message);
-            this.dialoading = false;
-          }
-      }).catch((err) => {
-          this.dialoading=false
-          console.log('err', err)
+
+     // 创建区域图层
+    initPro(code, dep) {
+        let map = amapManager._map
+      let that = this
+       console.log(AMap.DistrictLayer)
+      this.disProvince && disProvince.setMap(null)
+      this.disProvince = new AMap.DistrictLayer.Province({
+        zIndex: 12,
+        adcode: [code],
+        depth: dep,
+        styles: {
+          fill: function(properties) {
+            // properties为可用于做样式映射的字段，包含
+            // NAME_CHN:中文名称
+            // adcode_pro
+            // adcode_cit
+            // adcode
+            var adcode = properties.adcode
+            return 'rgb(45 ,99,201)'
+            // that.getColorByAdcode(adcode)
+          },
+          'province-stroke': 'cornflowerblue',
+          'city-stroke': 'rgb(53,224,251)', // 中国地级市边界
+          'county-stroke': 'rgba(255,255,255,0.5)' // 中国区县边界
+        }
       })
+      this.disProvince.setMap(map)
     },
+    // 颜色辅助方法
+    // getColorByAdcode(adcode) {
+    //   if (!this.colors[adcode]) {
+    //     var gb = Math.random() * 155
+    //     this.colors[adcode] = 'rgb(' + gb + ',' + gb + ',250)'
+    //   }
+    //   return this.colors[adcode]
+    // },
+
+
     drawBounds(){
         //加载行政区划插件
         var opts = {
@@ -620,6 +987,7 @@ export default {
           extensions: 'all',  //返回行政区边界坐标组等具体信息
           level: 'province'  //查询行政级别为 市
         };
+        console.log(AMap.DistrictSearch)
         this.district = new AMap.DistrictSearch(opts);
         let map = amapManager._map
         // map.setZoom(14);
@@ -639,7 +1007,7 @@ export default {
                     fillOpacity: 0.1,
                     fillColor: '#80d8ff',
                     strokeColor: '#0091ea',
-                    // strokeStyle: "dashed"
+                    strokeStyle: "dashed"
                 });
                 this.polygons.push(polygon);
               }
@@ -684,61 +1052,6 @@ export default {
       this.polygons = [];
     },
 
-    downloadFile(){
-      // 导出上报企业情况
-      let resultRegionCode = this.optionValue
-    //   .length>1?this.optionValue[1]:this.optionValue[0]
-      this.axios.get('/api/government/energyMonitor/download/uploaded/'+this.lastDay+'/'+resultRegionCode).then((res)=>{
-      }).catch()
-    },
-    getEnterpriseReportedInfo(regionCode){
-      this.loading3=true;
-      let resultRegionCode = ''
-      if(regionCode){
-        resultRegionCode = regionCode
-      }else{
-        resultRegionCode = this.optionValue
-        // .length>1?this.optionValue[1]:this.optionValue[0]
-      }
-      console.log(this.optionValue)
-      this.regionCodeinfo=resultRegionCode
-      this.axios.post('/api/government/energyMonitor/getEnterpriseReportedInfo/'+this.lastDay+'/'+this.regionCodeinfo).then((res)=>{
-        let i = res.data.data
-        this.chartRingDataTwo = {
-          columns: ["类别", "家"],
-          rows: [
-            { 类别: "已上报企业数", 家: i.alreadyReportedCount, 比重: i.alreadyReportedCountRate, color: "#52e198" },
-            { 类别: "未上报企业数", 家: i.notReportedCount, 比重: i.notReportedCountRate, color: "#fabc4d" },
-          ]
-        }
-        this.chartRingExtendTwo.graphic.children[0].style.text = i.totalCount
-        this.loading3 = false
-      }).catch()
-    },
-    getIndustryStructureData(regionCode){
-      this.loading2 = true
-      let resultRegionCode = ''
-      if(regionCode){
-        resultRegionCode = regionCode
-      }else{
-        resultRegionCode = this.optionValue
-        // .length>1?this.optionValue[1]:this.optionValue[0]
-      }
-      this.axios.post('/api/government/energyMonitor/getIndustryStructureData/'+resultRegionCode).then((res)=>{
-        let color = ["#2891fc","#fcc93c","#38dc88","#fd8888","#ed85fd","#7695fc","#42e0f9"];
-        let totalCount = 0
-        res.data.data.map((i,j)=>{
-          i.color = color[j]
-          totalCount += i.industryEnterpriseCount
-        })
-        this.chartRingData = {
-          columns: [ "industryName", "industryEnterpriseCount" ],
-          rows: res.data.data
-        }
-      this.chartRingExtend.graphic.children[0].style.text = totalCount
-      this.loading2 = false
-      }).catch()
-    },
     getDistrictEnterpriseInfo(x){
       this.areaScale = 'county'
       let self = this;
@@ -847,44 +1160,32 @@ export default {
       let self = this;
       let regionCode = this.optionValue
     //   .length>1?this.optionValue[1]:this.optionValue[0]
-      this.axios.post('/api/government/energyMonitor/getRegionEnterpriseInfo',{regionCode}).then((res)=>{
-        res.data.data.map((i,j)=>{
-          i.position = [i.longitude,i.latitude]
-          i.events = {
-            click(){
-              self.getIndustryStructureData(i.regionCode)
-              self.getDistrictEnterpriseInfo(i)
-              self.getEnterpriseReportedInfo(i.regionCode)
-            },
-            mouseover() {
-              self.showProvinceWindow = {
-                position:i.position,
-                visible:true,
-                content:`
-                <div style="color:#fff;background:#343d5d;border:none;border-radius:4px;">
-                  <p style="font-size:14px;">${i.regionName}共有企业：${i.energyEnterpriseInfo.length}个</p>
-                </div>`
-              }
-            },
-            mouseout() {
-              self.showProvinceWindow.visible = false
-            }
-          }
-        })
-        this.provinceMarkers = res.data.data
+    //   this.axios.post('/api/government/energyMonitor/getRegionEnterpriseInfo',{regionCode}).then((res)=>{
+    //     res.data.data.map((i,j)=>{
+    //       i.position = [i.longitude,i.latitude]
+    //       i.events = {
+    //         click(){
+    //         },
+    //         mouseover() {
+    //           self.showProvinceWindow = {
+    //             position:i.position,
+    //             visible:true,
+    //             content:`
+    //             <div style="color:#fff;background:#343d5d;border:none;border-radius:4px;">
+    //               <p style="font-size:14px;">${i.regionName}共有企业：${i.energyEnterpriseInfo.length}个</p>
+    //             </div>`
+    //           }
+    //         },
+    //         mouseout() {
+    //           self.showProvinceWindow.visible = false
+    //         }
+    //       }
+    //     })
+        // this.provinceMarkers = res.data.data
         this.loading1 = false
-      }).catch()
+    //   }).catch()
     },
 
-    toPageDataDetailMonitor(){
-        this.$router.push({
-            path:'/dataDetailMonitor',
-            query: {
-                enterpriseCode: '',
-                date:this.lastDay ,
-            }
-        })
-    },
     initData(val){
       console.log('弹框数据初始化');
       console.log(val);
@@ -900,23 +1201,9 @@ export default {
       this.$set(this.queryform,'enterpriseCodes',code);
       this.queryform.enterpriseCodes=[code];
       console.log(this.queryform.enterpriseCodes)
-      this.searchform();
       // var industryCode=val.industryCode
     },
-    // 行业信息
-        getIndustry(){
-            this.axios.post('/api/government/comprehensiveReport/findIndustry').then((res) => {
-                console.log('***********行业信息**********')
-                console.log( res.data.data)
-                if (res.data.code == 200) {
-                    this.industryData= res.data.data;
-                }else{
-                    this.$message.error(res.data.message);
-                }
-            }).catch((err) => {
-                console.log('err', err)
-            })
-        },
+
         inChange(val){
             if(this.queryform.enterpriseCodes&&this.queryform.enterpriseCodes.length>0){
                 this.queryform.enterpriseCodes=[];
@@ -932,39 +1219,6 @@ export default {
                 }
             })
             console.log(this.queryform.industryCodes)
-            this.getEnterprise();
-        },
-        // 企业信息
-        getEnterprise(){
-            var params={
-                industryCodes:this.queryform.industryCodes,
-                regionCodes:this.queryform.regionCodes,
-            }
-            this.axios.post('/api/government/comprehensiveReport/findEnterprise', params).then((res) => {
-                console.log('***********企业信息**********')
-                console.log( res.data.data)
-                if (res.data.code == 200) {
-                    this.enterpriseData= res.data.data;
-                }else{
-                    this.$message.error(res.data.message);
-                }
-            }).catch((err) => {
-                console.log('err', err)
-            })
-        },
-        // 能源分类
-        getEnergyClassCode(){
-            this.axios.post('/api/government/comprehensiveReport/findEnergyClassCode').then((res) => {
-                console.log('***********能源分类**********')
-                console.log( res.data.data)
-                if (res.data.code == 200) {
-                    this.classCodeData= res.data.data;
-                }else{
-                    this.$message.error(res.data.message);
-                }
-            }).catch((err) => {
-                console.log('err', err)
-            })
         },
         classChange(val){
             if(this.queryform.energyTypeCodes&&this.queryform.energyTypeCodes.length>0){
@@ -972,69 +1226,18 @@ export default {
             }
             console.log(val);
             console.log(this.queryform.energyClassCodes);
-            this.getEnergyTypeCode();
         },
-         // 能源分项
-        getEnergyTypeCode(){
-            var energyClassCodes=[]
-            if(this.queryform.energyClassCodes&&this.queryform.energyClassCodes.length>0){
-                energyClassCodes=this.queryform.energyClassCodes
-            }else{energyClassCodes=[]}
-            var params={
-                "classifyCodes":energyClassCodes
-            }
-            this.axios.post('/api/government/comprehensiveReport/findEnergyTypeCode',params).then((res) => {
-                console.log('***********能源分项**********')
-                console.log( res.data.data)
-                if (res.data.code == 200) {
-                    this.typeCodeData= res.data.data;
-                }else{
-                    this.$message.error(res.data.message);
-                }
-            }).catch((err) => {
-                console.log('err', err)
-            })
-        },
-        getMonth(){
-            let date = new Date();
-            let yy = date.getFullYear();
-            let mm = date.getMonth() + 1;
-            let dd = new Date(yy,mm,0).getDate();
-            if(Number(mm)<10){
-                mm='0'+mm;
-            }
-            var startDate=yy+'-'+'01-01';
-            var endDate=yy+'-'+mm+'-'+dd;
-            console.log(startDate);
-            console.log(endDate);
-            this.$set(this.queryform,'date',[startDate,endDate])
-            // this.queryform.date=[startDate,endDate];
-            this.queryform.beginTime=startDate;
-            this.queryform.endTime=endDate;
-        },
+
   },
-  created(){
-    this.lastDay = this.$store.getters.lastDay
-    this.$store.getters.areaSelectOptions.then((val)=>{
-        this.options = val
-        this.optionsData = val
-        this.optionValue= this.options[0].value
-    }).then(()=>{
-        this.getRegionEnterpriseInfo()
-        this.getIndustryStructureData()
-        this.getEnterpriseReportedInfo()
-    })
-  },
+        // this.getRegionEnterpriseInfo()
   mounted() {
-    this.$emit('showWholeView',false)
-    this.getMonth()
-    this.getEnergyClassCode();
-    this.getEnergyTypeCode();
-    this.getIndustry();
-    this.getEnterprise();
-    lazyAMapApiLoaderInstance.load().then(() => {
-      this.drawBounds();
-    });
+    //   setTimeout(() => {
+          lazyAMapApiLoaderInstance.load().then(() => {
+            // this.drawBounds();
+            this.initPro(410000,1)
+        });
+    //   }, 500);
+    
     
   }
 };
@@ -1047,7 +1250,6 @@ export default {
   background: #1d273b;
   font-size: 0.12rem;
   color: #fff;
-  padding: 0.2rem;
   display: flex;
   position: relative;
   overflow-x: hidden;

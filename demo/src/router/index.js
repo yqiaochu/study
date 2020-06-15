@@ -14,6 +14,7 @@ const canvaswaterDocument = r => require.ensure([], () => r(require('@/pages/can
 const drag = r => require.ensure([], () => r(require('@/pages/drag')), 'drag');
 const bctledgerForm = r => require.ensure([], () => r(require('@/pages/bctledgerForm')), 'bctledgerForm');
 const amap = r => require.ensure([], () => r(require('@/pages/amap')), 'amap');
+const datamap = r => require.ensure([], () => r(require('@/pages/datamap')), 'datamap');
 export default new Router({
 	routes: [{
 			path: '/',
@@ -66,6 +67,12 @@ export default new Router({
                     path: '/amap',
                     name: 'amap',
                     component: amap,
+                    children: []
+                },
+                {
+                    path: '/datamap',
+                    name: 'datamap',
+                    component: datamap,
                     children: []
                 },
             ]
